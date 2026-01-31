@@ -2,7 +2,7 @@ import numpy as np
 import numba
 
 @numba.njit
-def mandelbrot_escape_times(C, max_iter=200, R=2):
+def mandelbrot_escape_times(C, f, max_iter=200, R=2):
     h, w = C.shape
     iters = np.zeros((h, w), dtype=np.int32)
 
@@ -12,7 +12,7 @@ def mandelbrot_escape_times(C, max_iter=200, R=2):
             z = 0.0 + 0.0j
 
             for n in range(max_iter):
-                z = z*z + c
+                z = f(z, c)
                 if (z.real*z.real + z.imag*z.imag) > R*R:
                     iters[i, j] = n
                     break
@@ -23,14 +23,14 @@ def mandelbrot_escape_times(C, max_iter=200, R=2):
 
 
 @numba.njit
-def julia_set(C, XY, max_iter=200, R=500):
+def julia_set(c, XY, f, max_iter=200, R=500):
     h, w = XY.shape
     iters = np.zeros((h, w), dtype=np.int32)
     for i in range(h):
         for j in range(w):
             z = XY[i, j]
             for n in range(max_iter):
-                z = z*z + C
+                z = f(z, c)
                 if (z.real * z.real + z.imag * z.imag) > R * R:
                     iters[i, j] = n
                     break

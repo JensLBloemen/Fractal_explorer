@@ -18,7 +18,7 @@ class App:
 
         grid = np.meshgrid(x, y)
         X, Y = grid
-        out = mandelbrot_escape_times(X + 1j*Y)
+        out = mandelbrot_escape_times(X + 1j*Y, self.function)
 
 
         plt.ion()
@@ -37,7 +37,7 @@ class App:
                                   origin="lower",
                                   cmap="magma")
         
-        self.img2 = self.ax2.imshow(julia_set(self.C, X + 1j*Y), 
+        self.img2 = self.ax2.imshow(julia_set(self.C, X + 1j*Y, self.function), 
                                   extent=[-2,2,-2,2],
                                   origin="lower")
         
@@ -52,12 +52,11 @@ class App:
 
         grid = np.meshgrid(x, y)
         X, Y = grid
-        out = julia_set(self.C, X + 1j * Y)
+        out = julia_set(self.C, X + 1j * Y, self.function)
 
         self.img2.set_data(out)
         self.img2.set_extent((xmin, xmax, ymin, ymax))
         self.ax2.figure.canvas.draw_idle()
-
 
 
     def onClick(self, event):
@@ -72,7 +71,7 @@ class App:
             X, Y = grid
 
 
-            out = julia_set(coord, X + 1j * Y)
+            out = julia_set(coord, X + 1j * Y, self.function)
             self.fig2.suptitle(f"Julia set for c={round(self.C.real,3)}+{round(self.C.imag,3)}i")
 
             self.img2.set_data(out)
@@ -91,7 +90,7 @@ class App:
 
         grid = np.meshgrid(x, y)
         X, Y = grid
-        out = mandelbrot_escape_times(X + 1j*Y)
+        out = mandelbrot_escape_times(X + 1j*Y, self.function)
 
         self.img.set_data(out)
         self.img.set_extent((self.x_min, self.x_max, self.y_min, self.y_max))
