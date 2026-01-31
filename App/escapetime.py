@@ -2,22 +2,25 @@ import numpy as np
 import numba
 
 @numba.njit
-def mandelbrot_escape_times(C, f, max_iter=200, R=2):
+def mandelbrot_escape_times(C, f, crit_points, max_iter=200, R=2):
     h, w = C.shape
     iters = np.zeros((h, w), dtype=np.int32)
 
     for i in range(h):
         for j in range(w):
             c = C[i, j]
-            z = 0.0 + 0.0j
 
-            for n in range(max_iter):
-                z = f(z, c)
-                if (z.real*z.real + z.imag*z.imag) > R*R:
-                    iters[i, j] = n
+            for crit_point in crit_points:
+                z = crit_point
+                if iters[i, j] != 0:
                     break
-            else:
-                iters[i, j] = max_iter
+                for n in range(max_iter):
+                    z = f(z, c)
+                    if (z.real*z.real + z.imag*z.imag) > R*R:
+                        iters[i, j] = n
+                        break
+                else:
+                    iters[i, j] = max_iter
 
     return iters
 
