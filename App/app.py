@@ -75,7 +75,7 @@ class App:
             self.fig2.suptitle(f"Julia set for c={round(self.C.real,3)}+{round(self.C.imag,3)}i")
 
             self.img2.set_data(out)
-            self.img2.set_extent((self.x_min, self.x_max, self.y_min, self.y_max))
+            # self.img2.set_extent((self.x_min, self.x_max, self.y_min, self.y_max))
             self.ax2.figure.canvas.draw_idle()
 
             return
